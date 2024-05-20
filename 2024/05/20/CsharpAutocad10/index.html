@@ -16,24 +16,25 @@
   <meta name="author" content="Yuangen Wang">
   <meta name="keywords" content="">
   
-    <meta name="description" content="安装Autocad 作者安装的版本为2023，网上安装教程很多，这里不做赘述  安装完成后在AutoCad安装的根目录(.exe所在的目录下)找到以下dll，后面开发需要依赖引用  AcCoreMgd.dll AcDbMgd.dll AcMgd.dll Autodesk.AutoCAD.Interop.Common.dll Autodesk.AutoCAD.Interop.dll   .net f">
+    <meta name="description" content="开始之前确保已完成步骤1创建解决方案和类库项目，并在对应项目中安装nuget包             经过之前几步的项目基础设施搭建以及Autocad部分操作的实现，现在我们启动项目，并且通过C#代码动态创建Autocad的菜单，并且将菜单和自定义Autocad命令进行绑定 ACD.Client项目中创建类文件PluginStart.cs 123456789101112">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C#基于Autocad的二次开发(1.环境准备)">
-<meta property="og:url" content="http://example.com/2024/05/17/CsharpAutocad1/index.html">
+<meta property="og:title" content="C#基于Autocad的二次开发(10.项目启动-菜单和命令)">
+<meta property="og:url" content="http://example.com/2024/05/20/CsharpAutocad10/index.html">
 <meta property="og:site_name" content="Wangyg&#39;s Blog">
-<meta property="og:description" content="安装Autocad 作者安装的版本为2023，网上安装教程很多，这里不做赘述  安装完成后在AutoCad安装的根目录(.exe所在的目录下)找到以下dll，后面开发需要依赖引用  AcCoreMgd.dll AcDbMgd.dll AcMgd.dll Autodesk.AutoCAD.Interop.Common.dll Autodesk.AutoCAD.Interop.dll   .net f">
+<meta property="og:description" content="开始之前确保已完成步骤1创建解决方案和类库项目，并在对应项目中安装nuget包             经过之前几步的项目基础设施搭建以及Autocad部分操作的实现，现在我们启动项目，并且通过C#代码动态创建Autocad的菜单，并且将菜单和自定义Autocad命令进行绑定 ACD.Client项目中创建类文件PluginStart.cs 123456789101112">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/img/autocadlibs.png">
-<meta property="og:image" content="http://example.com/img/solution.png">
-<meta property="article:published_time" content="2024-05-17T08:27:09.000Z">
-<meta property="article:modified_time" content="2024-05-20T08:09:50.909Z">
+<meta property="og:image" content="http://example.com/img/acadexe.png">
+<meta property="og:image" content="http://example.com/img/netload.png">
+<meta property="og:image" content="http://example.com/img/linkline.png">
+<meta property="article:published_time" content="2024-05-20T07:20:54.000Z">
+<meta property="article:modified_time" content="2024-05-20T08:11:12.535Z">
 <meta property="article:author" content="Yuangen Wang">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/img/autocadlibs.png">
+<meta name="twitter:image" content="http://example.com/img/acadexe.png">
   
   
   
-  <title>C#基于Autocad的二次开发(1.环境准备) - Wangyg&#39;s Blog</title>
+  <title>C#基于Autocad的二次开发(10.项目启动-菜单和命令) - Wangyg&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -211,7 +212,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="C#基于Autocad的二次开发(1.环境准备)"></span>
+            <span id="subtitle" data-typed-text="C#基于Autocad的二次开发(10.项目启动-菜单和命令)"></span>
           
         </div>
 
@@ -222,8 +223,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-05-17 16:27" pubdate>
-          2024年5月17日 下午
+        <time datetime="2024-05-20 15:20" pubdate>
+          2024年5月20日 下午
         </time>
       </span>
     
@@ -234,7 +235,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          297 字
+          588 字
         
       </span>
     
@@ -245,7 +246,7 @@
         
         
         
-          3 分钟
+          5 分钟
         
       </span>
     
@@ -282,56 +283,25 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">C#基于Autocad的二次开发(1.环境准备)</h1>
+            <h1 id="seo-header">C#基于Autocad的二次开发(10.项目启动-菜单和命令)</h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="安装Autocad"><a href="#安装Autocad" class="headerlink" title="安装Autocad"></a>安装Autocad</h3><blockquote>
-<p>作者安装的版本为2023，网上安装教程很多，这里不做赘述</p>
-</blockquote>
-<p>安装完成后在AutoCad安装的根目录(.exe所在的目录下)找到以下dll，后面开发需要依赖引用</p>
-<ul>
-<li>AcCoreMgd.dll</li>
-<li>AcDbMgd.dll</li>
-<li>AcMgd.dll</li>
-<li>Autodesk.AutoCAD.Interop.Common.dll</li>
-<li>Autodesk.AutoCAD.Interop.dll</li>
-</ul>
-<p><img src="/img/autocadlibs.png" srcset="/img/loading.gif" lazyload alt="图片" title="dll"></p>
-<h3 id="net-framework环境准备"><a href="#net-framework环境准备" class="headerlink" title=".net framework环境准备"></a>.net framework环境准备</h3><blockquote>
-<p>下载对应版本的sdk，这里作者版本为4.7.1</p>
-</blockquote>
-<h3 id="解决方案搭建"><a href="#解决方案搭建" class="headerlink" title="解决方案搭建"></a>解决方案搭建</h3><p>新建解决方案名称为ACDesign，并创建以下多个.net framework类库项目</p>
-<blockquote>
-<p>基于Autocad二次开发时，解决方案中不需要有应用程序项目，项目调试或运行都做为Autocad的插件依托于autocad主程序运行</p>
-</blockquote>
-<ul>
-<li>ACD.Domain – 领域模型</li>
-<li>ACD.Application	– 业务和抽象</li>
-<li>ACD.Infrastructure	– 基础设施</li>
-<li>ACD.CadCore	– 基于Autocad的核心操作</li>
-<li>ACD.Client	– 插件客户端,可通过Autocad命令调用窗体程序或者执行代码</li>
-</ul>
-<p><img src="/img/solution.png" srcset="/img/loading.gif" lazyload alt="图片" title="解决方案"></p>
-<h3 id="nuget包"><a href="#nuget包" class="headerlink" title="nuget包"></a>nuget包</h3><ul>
-<li>Autofac 5.0.0 (ACD.Client，ACD.Infrastructure)</li>
-<li>NLog 4.5.0 (ACD.Infrastructure)</li>
-<li>SqlSugar 5.1.4.148 (ACD.Infrastructure，ACD.Domain，ACD.Application，ACD.Client)</li>
-<li>Npgsql 4.0.6 (ACD.Infrastructure)</li>
-<li>Autofac.Extras.NLog 3.0.1 (ACD.Infrastructure)</li>
-<li>Hangfire.Autofac 2.4.0  (ACD.Infrastructure)</li>
-<li>Hangfire.Core 1.7.30  (ACD.Infrastructure，ACD.Client)</li>
-<li>Hangfire.SqlServer 1.7.30  (ACD.Infrastructure)</li>
-</ul>
-<p>ACD.CadCore和ACD.Client项目中需要额外引用以下dll</p>
-<ul>
-<li>AcCoreMgd.dll</li>
-<li>AcDbMgd.dll</li>
-<li>AcMgd.dll</li>
-<li>Autodesk.AutoCAD.Interop.Common.dll</li>
-<li>Autodesk.AutoCAD.Interop.dll</li>
-</ul>
+                <div class="note note-warning">
+            <p>开始之前确保已完成步骤1创建解决方案和类库项目，并在对应项目中安装nuget包</p>
+          </div>
+
+<p>经过之前几步的项目基础设施搭建以及Autocad部分操作的实现，现在我们启动项目，并且通过C#代码动态创建Autocad的菜单，并且将菜单和自定义Autocad命令进行绑定</p>
+<p>ACD.Client项目中创建类文件PluginStart.cs</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs csharp">[<span class="hljs-meta">assembly: ExtensionApplication(typeof(ACD.Client.PluginStart))</span>]<br><span class="hljs-keyword">namespace</span> <span class="hljs-title">ACD.Client</span><br>&#123;<br>    <span class="hljs-keyword">internal</span> <span class="hljs-keyword">class</span> <span class="hljs-title">PluginStart</span> : <span class="hljs-title">IExtensionApplication</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Initialize</span>()</span><br>        &#123;<br>            <span class="hljs-comment">//获取CAD应用程序</span><br>            AcadApplication app = Autodesk.AutoCAD.ApplicationServices.Application.AcadApplication <span class="hljs-keyword">as</span> AcadApplication;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; app.MenuGroups.Item(<span class="hljs-number">0</span>).Menus.Count; i++)<br>            &#123;<br>                <span class="hljs-keyword">var</span> name = app.MenuGroups.Item(<span class="hljs-number">0</span>).Menus.Item(i).Name;<br>                <span class="hljs-keyword">if</span> (name == <span class="hljs-string">&quot;ACDesignBackground&quot;</span>)  <span class="hljs-comment">//判断菜单是否已存在，如果存在则不再创建</span><br>                    <span class="hljs-keyword">return</span>;<br>            &#125;<br>            <span class="hljs-comment">//添加根菜单</span><br>            AcadPopupMenu pmParnet = app.MenuGroups.Item(<span class="hljs-number">0</span>).Menus.Add(<span class="hljs-string">&quot;ACDesignBackground&quot;</span>);<br><br>            pmParnet.AddMenuItem(pmParnet.Count + <span class="hljs-number">1</span>, <span class="hljs-string">&quot;ACDesignStart  &quot;</span>, <span class="hljs-string">&quot;ACDesignStart &quot;</span>);<br>            pmParnet.AddMenuItem(pmParnet.Count + <span class="hljs-number">1</span>, <span class="hljs-string">&quot;ACDesignStop  &quot;</span>, <span class="hljs-string">&quot;ACDesignStop &quot;</span>);<br><br>            <span class="hljs-comment">//将创建的菜单加入到CAD的菜单中</span><br>            pmParnet.InsertInMenuBar(app.MenuBar.Count + <span class="hljs-number">1</span>);<br><br>            <span class="hljs-comment">//服务注册</span><br>            <span class="hljs-keyword">await</span> AppInit.Init();<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Terminate</span>()</span> <br>        &#123; <br>            AppInit.BackgroundJobServers?.Dispose();<br>        &#125; <br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>ACD.Client项目中创建类文件Commands.cs</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> ACDApplication = Autodesk.AutoCAD.ApplicationServices.Core.Application;<br><br>[<span class="hljs-meta">assembly: CommandClass(typeof(ACD.Client.Commands))</span>]<br><span class="hljs-keyword">namespace</span> <span class="hljs-title">ACD.Client</span><br>&#123;<br>    <span class="hljs-keyword">internal</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Commands</span><br>    &#123;<br>        [<span class="hljs-meta">CommandMethod(<span class="hljs-string">&quot;ACDesignStart&quot;</span>, CommandFlags.Modal)</span>]<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ACDesignStart</span>()</span><br>        &#123;<br>            <span class="hljs-keyword">var</span> hangfire = AppInit.Resolve&lt;IHangfireService&gt;();<br><br>            hangfire.AddOrUpdate(() =&gt; Console.WriteLine(<span class="hljs-string">&quot;Hello&quot;</span>), <span class="hljs-string">&quot;*/2 * * * * * &quot;</span>, TimeZoneInfo.Local);<br><br>            <span class="hljs-keyword">var</span> lines = <span class="hljs-keyword">new</span> List&lt;LinkLineParam&gt;<br>            &#123;<br>                 <span class="hljs-keyword">new</span> LinkLineParam<br>                 &#123;<br>                     DimPosition=<span class="hljs-number">100</span>,<br>                     EndPoint= <span class="hljs-keyword">new</span> ACDPoint3D(<span class="hljs-number">100</span>,<span class="hljs-number">100</span>,<span class="hljs-number">0</span>),<br>                     StartPoint=<span class="hljs-keyword">new</span> ACDPoint3D(<span class="hljs-number">200</span>,<span class="hljs-number">200</span>,<span class="hljs-number">0</span>),<br>                     LineType =  Domain.LineType.DimensionLine,<br>                     LayerName=<span class="hljs-string">&quot;尺寸线层&quot;</span><br>                 &#125;,<br>                 <span class="hljs-keyword">new</span> LinkLineParam<br>                 &#123;<br>                     DimPosition=<span class="hljs-number">100</span>,<br>                     EndPoint= <span class="hljs-keyword">new</span> ACDPoint3D(<span class="hljs-number">300</span>,<span class="hljs-number">100</span>,<span class="hljs-number">0</span>),<br>                     StartPoint=<span class="hljs-keyword">new</span> ACDPoint3D(<span class="hljs-number">500</span>,<span class="hljs-number">200</span>,<span class="hljs-number">0</span>),<br>                     LineType =  Domain.LineType.BlockLinkLine,<br>                     LayerName=<span class="hljs-string">&quot;center&quot;</span><br>                 &#125;<br>            &#125;;<br><br>            <span class="hljs-keyword">var</span> logger = AppInit.Resolve&lt;IloggerService&gt;();<br>            logger.Info(<span class="hljs-string">&quot;Hello&quot;</span>);<br><br>            <span class="hljs-comment">//当前工作文档</span><br>            Document document = ACDApplication.DocumentManager.MdiActiveDocument;<br>            <span class="hljs-comment">//绘制线条</span><br>            ACDOperation.Instance.LinkLine(document.Database,lines);<br>        &#125;<br><br>        [<span class="hljs-meta">CommandMethod(<span class="hljs-string">&quot;ACDesignStop&quot;</span>, CommandFlags.Modal)</span>]<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ACDesignStop</span>()</span><br>        &#123;<br>            AppInit.BackgroundJobServers?.Dispose();<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>选中ACD.Client项目文件，右键打开属性窗体，在调试中将启动操作的启动外部程序选中，浏览文件选中Autocad 安装目录中的exe文件，例如：F:\AutoCad\Application\AutoCAD 2023\acad.exe<br><img src="/img/acadexe.png" srcset="/img/loading.gif" lazyload alt="图片" title="启动外部程序"></p>
+<p>调试运行ACD.Client项目时，F:\AutoCad\Application\AutoCAD 2023\acad.exe执行程序会同时启动，autocad启动后，打开或新建文件，在当前文件的工作文档中输入命令”netload”加载ACD.Client.dll<br><img src="/img/netload.png" srcset="/img/loading.gif" lazyload alt="图片" title="netload命令"></p>
+<p>ACD.Client.dll加载后，程序进入PluginStart.Initialize()方法中，这时会通过代码创建自定义菜单，通过点击相应的菜单执行不同的命令并进入该命令绑定的方法中，例如点击菜单ACDesignStart进入到Commands.ACDesignStart()方法<br><img src="/img/linkline.png" srcset="/img/loading.gif" lazyload alt="图片" title="绘制线条"></p>
 
                 
               </div>
@@ -349,8 +319,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>C#基于Autocad的二次开发(1.环境准备)</div>
-      <div>http://example.com/2024/05/17/CsharpAutocad1/</div>
+      <div>C#基于Autocad的二次开发(10.项目启动-菜单和命令)</div>
+      <div>http://example.com/2024/05/20/CsharpAutocad10/</div>
     </div>
     <div class="license-meta">
       
@@ -362,7 +332,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年5月17日</div>
+          <div>2024年5月20日</div>
         </div>
       
       
@@ -394,18 +364,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/05/20/CsharpAutocad2/" title="C#基于Autocad的二次开发(2.块的插入)">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">C#基于Autocad的二次开发(2.块的插入)</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/10/11/DeepClone/" title="C#中的浅拷贝与深拷贝">
-                        <span class="hidden-mobile">C#中的浅拷贝与深拷贝</span>
+                      <a href="/2024/05/20/CsharpAutocad9/" title="C#基于Autocad的二次开发(9.Sqlsugar仓储模式)">
+                        <span class="hidden-mobile">C#基于Autocad的二次开发(9.Sqlsugar仓储模式)</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

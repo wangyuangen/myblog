@@ -16,15 +16,15 @@
   <meta name="author" content="Yuangen Wang">
   <meta name="keywords" content="">
   
-    <meta name="description" content="开始之前确保已完成步骤1创建解决方案和类库项目，并在对应项目中安装nuget包 自动注入项目中需要通过Autofac注入多个服务时，可通过反射机制实现服务的自动注入。实现思路为：定义一个IBaseService接口，所有需要注入的服务都继承此接口，通过反射获取所有继承了IBaseService的服务和其实现类并注入。Microsoft.Extensions.DependencyInjection也">
+    <meta name="description" content="开始之前确保已完成步骤1创建解决方案和类库项目，并在对应项目中安装nuget包             自动注入项目中需要通过Autofac注入多个服务时，可通过反射机制实现服务的自动注入。实现思路为：定义一个IBaseService接口，所有需要注入的服务都继承此接口，通过反射获取所有继承了IBaseService的服务和其实现类并注入。Microsoft.Extens">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C#基于Autocad的二次开发(7.服务自动注入-NLog)">
 <meta property="og:url" content="http://example.com/2024/05/20/CsharpAutocad7/index.html">
 <meta property="og:site_name" content="Wangyg&#39;s Blog">
-<meta property="og:description" content="开始之前确保已完成步骤1创建解决方案和类库项目，并在对应项目中安装nuget包 自动注入项目中需要通过Autofac注入多个服务时，可通过反射机制实现服务的自动注入。实现思路为：定义一个IBaseService接口，所有需要注入的服务都继承此接口，通过反射获取所有继承了IBaseService的服务和其实现类并注入。Microsoft.Extensions.DependencyInjection也">
+<meta property="og:description" content="开始之前确保已完成步骤1创建解决方案和类库项目，并在对应项目中安装nuget包             自动注入项目中需要通过Autofac注入多个服务时，可通过反射机制实现服务的自动注入。实现思路为：定义一个IBaseService接口，所有需要注入的服务都继承此接口，通过反射获取所有继承了IBaseService的服务和其实现类并注入。Microsoft.Extens">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-05-20T05:00:14.000Z">
-<meta property="article:modified_time" content="2024-05-20T06:37:05.203Z">
+<meta property="article:modified_time" content="2024-05-20T08:10:36.522Z">
 <meta property="article:author" content="Yuangen Wang">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -284,7 +284,10 @@
             
               <div class="markdown-body">
                 
-                <p>开始之前确保已完成步骤1创建解决方案和类库项目，并在对应项目中安装nuget包</p>
+                <div class="note note-warning">
+            <p>开始之前确保已完成步骤1创建解决方案和类库项目，并在对应项目中安装nuget包</p>
+          </div>
+
 <h3 id="自动注入"><a href="#自动注入" class="headerlink" title="自动注入"></a>自动注入</h3><p>项目中需要通过Autofac注入多个服务时，可通过反射机制实现服务的自动注入。<br>实现思路为：定义一个IBaseService接口，所有需要注入的服务都继承此接口，通过反射获取所有继承了IBaseService的服务和其实现类并注入。Microsoft.Extensions.DependencyInjection也可通过此方式实现。</p>
 <p>ACD.Application项目中创建接口文件IBaseService.cs</p>
 <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-symbol">IBaseService</span> &#123;  &#125;<br><br></code></pre></td></tr></table></figure>

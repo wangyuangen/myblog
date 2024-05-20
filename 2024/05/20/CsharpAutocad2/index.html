@@ -16,15 +16,15 @@
   <meta name="author" content="Yuangen Wang">
   <meta name="keywords" content="">
   
-    <meta name="description" content="开始之前确保已完成步骤1创建解决方案和类库项目，并在对应项目中安装nuget包 开始插入块操作之前，首先在ACD.Domain项目中创建”点位类”，”插入块类”。Autocad中所有图形绘制以及操作都基于点位，插入块也需要一个插入点，以及插入块的块文件，并且在插入时也需要指定将该块插入到某一图层 123456789101112131415161718 &#x2F;&#x2F;&#x2F; &lt;summary&gt;&#x2F;&#x2F;&#x2F;">
+    <meta name="description" content="开始之前确保已完成步骤1创建解决方案和类库项目，并在对应项目中安装nuget包             开始插入块操作之前，首先在ACD.Domain项目中创建”点位类”，”插入块类”。Autocad中所有图形绘制以及操作都基于点位，插入块也需要一个插入点，以及插入块的块文件，并且在插入时也需要指定将该块插入到某一图层 12345678910111213141516171">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C#基于Autocad的二次开发(2.块的插入)">
 <meta property="og:url" content="http://example.com/2024/05/20/CsharpAutocad2/index.html">
 <meta property="og:site_name" content="Wangyg&#39;s Blog">
-<meta property="og:description" content="开始之前确保已完成步骤1创建解决方案和类库项目，并在对应项目中安装nuget包 开始插入块操作之前，首先在ACD.Domain项目中创建”点位类”，”插入块类”。Autocad中所有图形绘制以及操作都基于点位，插入块也需要一个插入点，以及插入块的块文件，并且在插入时也需要指定将该块插入到某一图层 123456789101112131415161718 &#x2F;&#x2F;&#x2F; &lt;summary&gt;&#x2F;&#x2F;&#x2F;">
+<meta property="og:description" content="开始之前确保已完成步骤1创建解决方案和类库项目，并在对应项目中安装nuget包             开始插入块操作之前，首先在ACD.Domain项目中创建”点位类”，”插入块类”。Autocad中所有图形绘制以及操作都基于点位，插入块也需要一个插入点，以及插入块的块文件，并且在插入时也需要指定将该块插入到某一图层 12345678910111213141516171">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-05-20T01:27:51.000Z">
-<meta property="article:modified_time" content="2024-05-20T02:29:03.413Z">
+<meta property="article:modified_time" content="2024-05-20T08:10:11.293Z">
 <meta property="article:author" content="Yuangen Wang">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -284,7 +284,10 @@
             
               <div class="markdown-body">
                 
-                <p>开始之前确保已完成步骤1创建解决方案和类库项目，并在对应项目中安装nuget包</p>
+                <div class="note note-warning">
+            <p>开始之前确保已完成步骤1创建解决方案和类库项目，并在对应项目中安装nuget包</p>
+          </div>
+
 <p>开始插入块操作之前，首先在ACD.Domain项目中创建”点位类”，”插入块类”。Autocad中所有图形绘制以及操作都基于点位，插入块也需要一个插入点，以及插入块的块文件，并且在插入时也需要指定将该块插入到某一图层</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs csharp"> <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br><span class="hljs-comment"><span class="hljs-doctag">///</span> 点位类</span><br><span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ACDPoint3D</span><br>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">double</span> X &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">double</span> Y &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">double</span> Z &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ACDPoint3D</span>()</span> &#123; &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ACDPoint3D</span>(<span class="hljs-params"><span class="hljs-built_in">double</span> x, <span class="hljs-built_in">double</span> y, <span class="hljs-built_in">double</span> z</span>)</span><br>    &#123;<br>        X = x;<br>        Y = y;<br>        Z = z;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
