@@ -19,17 +19,19 @@
     <meta name="description" content="安装Autocad 作者安装的版本为2023，网上安装教程很多，这里不做赘述  安装完成后在AutoCad安装的根目录(.exe所在的目录下)找到以下dll，后面开发需要依赖引用  AcCoreMgd.dll AcDbMgd.dll AcMgd.dll Autodesk.AutoCAD.Interop.Common.dll Autodesk.AutoCAD.Interop.dll   .net f">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C#基于Autocad的二次开发(1.环境准备)">
-<meta property="og:url" content="http://example.com/2024/05/17/CsharpAutocad1/index.html">
+<meta property="og:url" content="https://wangyuangen.github.io/2024/05/17/CsharpAutocad1/index.html">
 <meta property="og:site_name" content="Wangyg&#39;s Blog">
 <meta property="og:description" content="安装Autocad 作者安装的版本为2023，网上安装教程很多，这里不做赘述  安装完成后在AutoCad安装的根目录(.exe所在的目录下)找到以下dll，后面开发需要依赖引用  AcCoreMgd.dll AcDbMgd.dll AcMgd.dll Autodesk.AutoCAD.Interop.Common.dll Autodesk.AutoCAD.Interop.dll   .net f">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/img/autocadlibs.png">
-<meta property="og:image" content="http://example.com/img/solution.png">
+<meta property="og:image" content="https://wangyuangen.github.io/img/autocadlibs.png">
+<meta property="og:image" content="https://wangyuangen.github.io/img/solution.png">
 <meta property="article:published_time" content="2024-05-17T08:27:09.000Z">
-<meta property="article:modified_time" content="2024-05-20T08:09:50.909Z">
+<meta property="article:modified_time" content="2024-05-20T09:23:28.769Z">
 <meta property="article:author" content="Yuangen Wang">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="AutoCad">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/img/autocadlibs.png">
+<meta name="twitter:image" content="https://wangyuangen.github.io/img/autocadlibs.png">
   
   
   
@@ -71,7 +73,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"wangyuangen.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -340,6 +342,46 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/C/" class="category-chain-item">C#</a>
+  
+  
+
+      </span>
+    
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AutoCad/" class="category-chain-item">AutoCad</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/" class="print-no-link">#C#</a>
+      
+        <a href="/tags/AutoCad/" class="print-no-link">#AutoCad</a>
+      
+    </div>
   
 </div>
 
@@ -350,7 +392,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>C#基于Autocad的二次开发(1.环境准备)</div>
-      <div>http://example.com/2024/05/17/CsharpAutocad1/</div>
+      <div>https://wangyuangen.github.io/2024/05/17/CsharpAutocad1/</div>
     </div>
     <div class="license-meta">
       

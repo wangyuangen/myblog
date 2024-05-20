@@ -19,13 +19,16 @@
     <meta name="description" content="开始之前确保已完成步骤1创建解决方案和类库项目，并在对应项目中安装nuget包             自动注入项目中需要通过Autofac注入多个服务时，可通过反射机制实现服务的自动注入。实现思路为：定义一个IBaseService接口，所有需要注入的服务都继承此接口，通过反射获取所有继承了IBaseService的服务和其实现类并注入。Microsoft.Extens">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C#基于Autocad的二次开发(7.服务自动注入-NLog)">
-<meta property="og:url" content="http://example.com/2024/05/20/CsharpAutocad7/index.html">
+<meta property="og:url" content="https://wangyuangen.github.io/2024/05/20/CsharpAutocad7/index.html">
 <meta property="og:site_name" content="Wangyg&#39;s Blog">
 <meta property="og:description" content="开始之前确保已完成步骤1创建解决方案和类库项目，并在对应项目中安装nuget包             自动注入项目中需要通过Autofac注入多个服务时，可通过反射机制实现服务的自动注入。实现思路为：定义一个IBaseService接口，所有需要注入的服务都继承此接口，通过反射获取所有继承了IBaseService的服务和其实现类并注入。Microsoft.Extens">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-05-20T05:00:14.000Z">
-<meta property="article:modified_time" content="2024-05-20T08:10:36.522Z">
+<meta property="article:modified_time" content="2024-05-20T09:17:36.749Z">
 <meta property="article:author" content="Yuangen Wang">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Autofac">
+<meta property="article:tag" content="NLog">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -68,7 +71,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"wangyuangen.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -325,6 +328,38 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/C/" class="category-chain-item">C#</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/" class="print-no-link">#C#</a>
+      
+        <a href="/tags/Autofac/" class="print-no-link">#Autofac</a>
+      
+        <a href="/tags/NLog/" class="print-no-link">#NLog</a>
+      
+    </div>
   
 </div>
 
@@ -335,7 +370,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>C#基于Autocad的二次开发(7.服务自动注入-NLog)</div>
-      <div>http://example.com/2024/05/20/CsharpAutocad7/</div>
+      <div>https://wangyuangen.github.io/2024/05/20/CsharpAutocad7/</div>
     </div>
     <div class="license-meta">
       
