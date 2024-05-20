@@ -1,0 +1,639 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yuangen Wang">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="开始之前确保已完成步骤1创建解决方案和类库项目，并在对应项目中安装nuget包 开始绘制连线操作之前，首先在ACD.Domain项目中创建”点位类”(步骤2中已创建，这里略),”连线类”。两点确认一条直线，所有连线类中需要有两个点位，同插入块的操作一样，线条也需要绘制到指定的图层，线条具有不同的类型，比如：线性标注，普通的轮廓线等。 12345678910111213141516171819202">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C#基于Autocad的二次开发(3.连线绘制)">
+<meta property="og:url" content="http://example.com/2024/05/20/CsharpAutocad3/index.html">
+<meta property="og:site_name" content="Wangyg&#39;s Blog">
+<meta property="og:description" content="开始之前确保已完成步骤1创建解决方案和类库项目，并在对应项目中安装nuget包 开始绘制连线操作之前，首先在ACD.Domain项目中创建”点位类”(步骤2中已创建，这里略),”连线类”。两点确认一条直线，所有连线类中需要有两个点位，同插入块的操作一样，线条也需要绘制到指定的图层，线条具有不同的类型，比如：线性标注，普通的轮廓线等。 12345678910111213141516171819202">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-05-20T02:06:09.000Z">
+<meta property="article:modified_time" content="2024-05-20T02:27:17.394Z">
+<meta property="article:author" content="Yuangen Wang">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>C#基于Autocad的二次开发(3.连线绘制) - Wangyg&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wangyg&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/banner.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="C#基于Autocad的二次开发(3.连线绘制)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-05-20 10:06" pubdate>
+          2024年5月20日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          716 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">C#基于Autocad的二次开发(3.连线绘制)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>开始之前确保已完成步骤1创建解决方案和类库项目，并在对应项目中安装nuget包</p>
+<p>开始绘制连线操作之前，首先在ACD.Domain项目中创建”点位类”(步骤2中已创建，这里略),”连线类”。两点确认一条直线，所有连线类中需要有两个点位，同插入块的操作一样，线条也需要绘制到指定的图层，线条具有不同的类型，比如：线性标注，普通的轮廓线等。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs csharp"> <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br><span class="hljs-comment"><span class="hljs-doctag">///</span> 连线类</span><br><span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">LinkLineParam</span><br>&#123;<br>    <span class="hljs-keyword">public</span> LineType LineType &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br><br>    <span class="hljs-keyword">public</span> ACDPoint3D StartPoint &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br><br>    <span class="hljs-keyword">public</span> ACDPoint3D EndPoint &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 图层名称</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> LayerName &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 标注偏移方向和单位</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">double</span> DimPosition &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">LinkLineParam</span>()</span> &#123; &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">LinkLineParam</span> (<span class="hljs-params">LineType lineType, ACDPoint3D startPoint, ACDPoint3D endPoint, <span class="hljs-built_in">string</span> layerName, <span class="hljs-built_in">double</span> dimPosition</span>)</span><br>    &#123;<br>        LineType = lineType;<br>        StartPoint = startPoint;<br>        EndPoint = endPoint;<br>        LayerName = layerName;<br>        DimPosition = dimPosition;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>LineType枚举类型</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br> <span class="hljs-comment"><span class="hljs-doctag">///</span> 线条类型</span><br> <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br> <span class="hljs-keyword">public</span> <span class="hljs-built_in">enum</span> LineType<br> &#123;<br>     <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>     <span class="hljs-comment"><span class="hljs-doctag">///</span> </span><br>     <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>     [<span class="hljs-meta">Description(<span class="hljs-string">&quot;轮廓线&quot;</span>)</span>]<br>     BlockLinkLine=<span class="hljs-number">0</span>,<br><br>     <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>     <span class="hljs-comment"><span class="hljs-doctag">///</span> </span><br>     <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>     [<span class="hljs-meta">Description(<span class="hljs-string">&quot;标注线&quot;</span>)</span>]<br>     DimensionLine,<br><br>     <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>     <span class="hljs-comment"><span class="hljs-doctag">///</span> </span><br>     <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>     [<span class="hljs-meta">Description(<span class="hljs-string">&quot;折痕线&quot;</span>)</span>]<br>     CreaseLine<br> &#125;<br></code></pre></td></tr></table></figure>
+
+<p>ACD.CadCore项目中创建类文件ACDOperation.LinkLine.cs，实现连线操作。</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-built_in">public</span> partial <span class="hljs-keyword">class</span> ACDOperation<br>&#123;<br>    <span class="hljs-built_in">public</span> <span class="hljs-type">bool</span> LinkLine(string dwgFilePath, string newFilePath, IEnumerable&lt;LinkLineParam&gt; lines)<br>    &#123;<br>        <span class="hljs-type">bool</span> result = <span class="hljs-keyword">true</span>;<br><br>        CheckFilePath(dwgFilePath, newFilePath);<br><br>        File.<span class="hljs-keyword">Copy</span>(dwgFilePath, newFilePath, <span class="hljs-keyword">true</span>);<br><br>        <span class="hljs-keyword">using</span> (<span class="hljs-keyword">Database</span> blockDb = <span class="hljs-built_in">new</span> <span class="hljs-keyword">Database</span>(<span class="hljs-keyword">false</span>, <span class="hljs-keyword">true</span>))<br>        &#123;<br>            blockDb.ReadDwgFile(newFilePath, FileOpenMode.OpenForReadAndWriteNoShare, <span class="hljs-keyword">true</span>, <span class="hljs-keyword">null</span>);<br>            blockDb.CloseInput(<span class="hljs-keyword">true</span>);<br><br>            result = LinkLine(blockDb, lines);<br>        &#125;<br><br>        <span class="hljs-keyword">if</span> (!result) File.<span class="hljs-keyword">Delete</span>(newFilePath);<br><br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br><br>    <span class="hljs-built_in">public</span> <span class="hljs-type">bool</span> LinkLine(IDynamicMetaObjectProvider <span class="hljs-keyword">database</span>, IEnumerable&lt;LinkLineParam&gt; lines)<br>    &#123;<br>        <span class="hljs-type">bool</span> result = <span class="hljs-keyword">true</span>;<br><br>        <span class="hljs-type">Line</span> <span class="hljs-type">line</span>;<br>        LayerTable layers;<br>        LayerTableRecord layer = <span class="hljs-keyword">null</span>;<br>        Point3d startPoint, endPoint;<br><br>        <span class="hljs-keyword">Database</span> curDb = <span class="hljs-keyword">database</span> <span class="hljs-keyword">as</span> <span class="hljs-keyword">Database</span>;<br><br>        <span class="hljs-keyword">using</span> (<span class="hljs-keyword">Transaction</span> curTrans = curDb.TransactionManager.StartTransaction())<br>        &#123;<br>            try<br>            &#123;<br>                layers = curTrans.GetObject(curDb.LayerTableId, OpenMode.ForRead) <span class="hljs-keyword">as</span> LayerTable;<br><br>                BlockTableRecord curSpace = curTrans.GetObject(curDb.CurrentSpaceId, OpenMode.ForWrite) <span class="hljs-keyword">as</span> BlockTableRecord;<br><br>               <br>                <span class="hljs-keyword">foreach</span> (var param <span class="hljs-keyword">in</span> lines)<br>                &#123;<br>                    endPoint = <span class="hljs-built_in">new</span> Point3d(param.EndPoint.X, param.EndPoint.Y, param.EndPoint.Z);<br>                    startPoint = <span class="hljs-built_in">new</span> Point3d(param.StartPoint.X, param.StartPoint.Y, param.StartPoint.Z);<br><br>                    <span class="hljs-keyword">if</span> (layers.Has(param.LayerName))<br>                    &#123;<br>                        layer = curTrans.GetObject(layers[param.LayerName], OpenMode.ForWrite) <span class="hljs-keyword">as</span> LayerTableRecord;<br>                    &#125;<br>                    <span class="hljs-keyword">if</span> (param.LineType == LineType.DimensionLine)<br>                    &#123;<br>                        //线性标注<br>                        AlignedDimension dimension = <span class="hljs-built_in">new</span> AlignedDimension();<br>                        dimension.XLine1Point = startPoint;<br>                        dimension.XLine2Point = endPoint;<br>                        dimension.DimLinePoint = GetDimLinePoint(startPoint, endPoint,param.DimPosition);<br><br>                        <span class="hljs-keyword">if</span> (!layer.<span class="hljs-keyword">IsNull</span>()) dimension.LayerId = layer.Id;<br><br>                        curSpace.AppendEntity(dimension);<br>                        curTrans.AddNewlyCreatedDBObject(dimension, <span class="hljs-keyword">true</span>);<br>                    &#125;<br>                    <span class="hljs-keyword">else</span><br>                    &#123;<br>                        //轮廓线<br>                        <span class="hljs-type">line</span> = <span class="hljs-built_in">new</span> Line(startPoint, endPoint);<br><br>                        <span class="hljs-keyword">if</span> (!layer.<span class="hljs-keyword">IsNull</span>()) <span class="hljs-type">line</span>.LayerId = layer.Id;<br><br>                        curSpace.AppendEntity(<span class="hljs-type">line</span>);<br>                        curTrans.AddNewlyCreatedDBObject(<span class="hljs-type">line</span>, <span class="hljs-keyword">true</span>);<br>                    &#125;<br>                &#125;<br>                curTrans.<span class="hljs-keyword">Commit</span>();<br>            &#125;<br>            catch (Autodesk.AutoCAD.Runtime.<span class="hljs-keyword">Exception</span>)<br>            &#123;<br>                curTrans.<span class="hljs-keyword">Abort</span>();<br>                result = <span class="hljs-keyword">false</span>;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br><br>    private Point3d GetDimLinePoint(Point3d startPoint, Point3d endPoint, <span class="hljs-type">double</span> dimPosition)<br>    &#123;<br>        <span class="hljs-type">double</span> x = <span class="hljs-number">0</span>, y = <span class="hljs-number">0</span>, z = <span class="hljs-number">0</span>;<br><br>        <span class="hljs-type">double</span> maxY = Math.Max(endPoint.Y, startPoint.Y);<br>        <span class="hljs-type">double</span> minY = Math.Min(endPoint.Y, startPoint.Y);<br>        <span class="hljs-type">double</span> balanceY = maxY - minY;<br>        <span class="hljs-keyword">if</span> (balanceY != <span class="hljs-number">0</span>)<br>        &#123;<br>            x = endPoint.X + dimPosition;<br>            y = minY + balanceY / <span class="hljs-number">2</span>d;<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">new</span> Point3d(x, y, z);<br>        &#125;<br><br>        <span class="hljs-type">double</span> maxX = Math.Max(endPoint.X, startPoint.X);<br>        <span class="hljs-type">double</span> minX = Math.Min(endPoint.X, startPoint.X);<br>        <span class="hljs-type">double</span> balanceX = maxX - minX;<br>        <span class="hljs-keyword">if</span> (balanceX != <span class="hljs-number">0</span>)<br>        &#123;<br>            y = endPoint.Y + dimPosition;<br>            x = minX + balanceX / <span class="hljs-number">2</span>d;<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">new</span> Point3d(x, y, z);<br>        &#125;<br><br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">new</span> Point3d(x, y, z);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>连线操作也是在当前工作文档空间中完成，普通的轮廓线需要创建一根线条，确定线条两点的具体坐标，并指定绘制的图层，接着将线条追加到当前文档空间中。标注线条额外需要确定标注文本内容的所在位置，这里通过GetDimLinePoint()方法传递连线两点的坐标计算出一个平均值赋予标注文本内容的坐标</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>C#基于Autocad的二次开发(3.连线绘制)</div>
+      <div>http://example.com/2024/05/20/CsharpAutocad3/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Yuangen Wang</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年5月20日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/05/20/CsharpAutocad4/" title="C#基于Autocad的二次开发(4.块的移动)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">C#基于Autocad的二次开发(4.块的移动)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/05/20/CsharpAutocad2/" title="C#基于Autocad的二次开发(2.块的插入)">
+                        <span class="hidden-mobile">C#基于Autocad的二次开发(2.块的插入)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
